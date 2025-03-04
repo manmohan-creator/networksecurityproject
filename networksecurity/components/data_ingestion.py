@@ -29,8 +29,9 @@ class DataIngestion:
             self.mongo_client= pymongo.MongoClient(MONGO_DB_URL)
             collection = self.mongo_client[database_name][collection_name]
 
-            pd.DataFrame(list(collection.find()))
+            df = pd.DataFrame(list(collection.find()))
 
+    
             if "_id" in df.columns.to_list():
                 df = df.drop(columns=["_id"], axis=1)
 
@@ -59,7 +60,7 @@ class DataIngestion:
 
             dir_path= os.path.dirname(self.data_ingestion_config.training_file_path)
             os.makedirs(dir_path, exist_ok=True)
-            logging.ingo(f"exporting train and test file path")
+            logging.info(f"exporting train and test file path")
 
             train_set.to_csv(
                 self.data_ingestion_config.training_file_path, index=False, header=True
